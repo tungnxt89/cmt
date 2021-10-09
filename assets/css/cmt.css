@@ -1,0 +1,19 @@
+.left {
+	float: left;
+}
+
+.clear {
+	clear: both;
+}
+
+#file_csv {
+	margin-bottom: 20px;
+}
+
+.el-upload {
+	padding: 10px 30px;
+	border: 1px solid black;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
