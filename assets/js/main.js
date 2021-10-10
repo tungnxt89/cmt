@@ -313,6 +313,27 @@
             }
         });
 
+        $(document).on('click', '.prev-page', function(e) {
+            const pageCurrent = parseInt($('#current-page-selector').val());
+
+
+            if(pageCurrent > 1) {
+                const pagePrev = pageCurrent - 1;
+
+                const params = {
+                    page: pagePrev
+                };
+                get_users(params);
+            }
+        });
+
+        $(document).on('click', '.first-page', function(e) {
+            const params = {
+                page: 1
+            };
+            get_users(params);
+        });
+
         // Call first
         const params = {
             page: 1
