@@ -9,13 +9,14 @@ class CMT_DB {
 	public static $instance;
 	public $wpdb;
 	public $tb_cmt_users;
-	public $limit = 5;
+	public $limit = 10;
 
 	protected function __construct() {
 		global $wpdb;
 
 		$this->wpdb         = $wpdb;
 		$this->tb_cmt_users = $wpdb->prefix . 'cmt_users';
+		$this->limit = get_option('posts_per_page', $this->limit);
 	}
 
 	public static function instance() {

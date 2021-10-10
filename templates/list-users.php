@@ -3,13 +3,9 @@
  * Template list users
  */
 
-$cmt_db = CMT_DB::instance();
-$filter = new Filter_User();
-$filter->page = 1;
-$users = $cmt_db->get_users($filter);
+//$users = $cmt_db->get_users($filter);
 $totals = $cmt_db->total_users();
 
-include_once 'insert_data.php';
 ?>
 
 <table class="wp-list-table widefat fixed striped table-view-list posts">

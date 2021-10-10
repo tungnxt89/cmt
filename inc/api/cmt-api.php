@@ -20,6 +20,11 @@ class CMT_API {
 			'methods'  => WP_REST_Server::CREATABLE,
 			'callback' => array( $this, 'update_users' ),
 		) );
+
+		register_rest_route( 'cmt/v1', '/users', array(
+			'methods'  => WP_REST_Server::CREATABLE,
+			'callback' => array( $this, 'list_users' ),
+		) );
 	}
 
 	public function create_users( WP_REST_Request $request ) {
@@ -112,17 +117,47 @@ class CMT_API {
 		$cmt_db = CMT_DB::instance();
 
 		try {
-			$page = $request->get_param( 'page' ) ?? 0;
+			$page = (int) $request->get_param( 'page' ) ?? 0;
 
 			$filter = new Filter_User();
 			$filter->page = $page;
-			$cmt_db->get_users($filter);
+			$users = $cmt_db->get_users($filter);
 
+			$content = '';
+			ob_start();
+			include CMT::$PATH_PLUGIN . 'templates/list-users.php';
+			$content = ob_get_contents();
+			ob_clean();
+
+			$res->data->content = $content;
+			$res->data->paginate = $this->get_paginate($page);
+			$res->status = 'success';
 		} catch ( Throwable $e ) {
 			$res->message = $e->getMessage();
 		}
 
 		wp_send_json( $res );
+	}
+
+	protected function get_paginate(int $page_current) {
+		$cmt_db = CMT_DB::instance();
+		$total_users = $cmt_db->total_users();
+		$posts_per_page = get_option('posts_per_page', 10);
+
+		$total_pages = floor($total_users / $posts_per_page);
+
+		if($total_users % $posts_per_page !== 0) {
+			$total_pages++;
+		}
+
+		$content = '';
+		ob_start();
+		include CMT::$PATH_PLUGIN . 'templates/paginate.php';
+		$content = ob_get_contents();
+		ob_clean();
+
+
+		return $content;
 	}
 
 	public static function instance(): CMT_API {

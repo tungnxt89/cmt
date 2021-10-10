@@ -18,11 +18,13 @@
 class CMT {
 	public static $instance;
 	public static $URL_PLUGIN;
+	public static $PATH_PLUGIN;
 
 	public function __construct() {
 		add_action( 'activated_plugin', array( $this, 'install_tables' ) );
 
 		self::$URL_PLUGIN = plugin_dir_url(__FILE__);
+		self::$PATH_PLUGIN = plugin_dir_path(__FILE__);
 
 		$this->includes();
 		$this->install_tables();
@@ -56,6 +58,12 @@ class CMT {
 	}
 
 	public function enqueue_scripts() {
+		$screen = get_current_screen();
+
+		if(!$screen || 'toplevel_page_cmt' !== $screen->id) {
+			return;
+		}
+
 		wp_register_script('papaparse', self::$URL_PLUGIN . 'assets/js/papaparse.min.js');
 		wp_enqueue_script('papaparse');
 
@@ -67,7 +75,7 @@ class CMT {
 	}
 
 	public function output() {
-		require_once 'templates/list-users.php';
+		require_once 'templates/dashboard.php';
 	}
 
 	public static function instance() {

@@ -156,7 +156,7 @@
         }
 
         function handle_file_ds_tong_hop(data_file) {
-            //data_file.splice(0, 12);
+            data_file.splice(0, 12);
 
             //console.log(data_file);
             let data_file_right = [];
@@ -169,7 +169,6 @@
 
                 if (value_check !== undefined && value_check != 'undefined' && value_check.length) {
                     //console.log(value_check);
-
 
                     data_ma_to_khai.push(row[1]);
 
@@ -219,6 +218,34 @@
 
         }
 
+        function get_users(params) {
+            let url = '/cmt/v1/users';
+
+            wp.apiFetch({
+                path: url,
+                method: 'POST',
+                data: params,
+            }).then((res) => {
+                const {status, message, data} = res;
+                if (status === 'success') {
+                    console.log(data);
+                    const el_wrapper_list_courses = $('#wrapper-list-users');
+                    const el_tablenav = $('.tablenav');
+
+                    el_wrapper_list_courses.html('');
+                    el_tablenav.html('');
+
+
+                    el_wrapper_list_courses.append(data.content);
+                    el_tablenav.append(data.paginate);
+                }
+            }).catch((err) => {
+
+            }).then(() => {
+
+            });
+        }
+
         // Foreach 100 row to insert table
         const handleAjax = function (url, params) {
             wp.apiFetch({
@@ -258,5 +285,38 @@
 
             });
         };
+
+        // Events
+        $(document).on('keyup', '#current-page-selector', function(e){
+            const self = $(this);
+
+            if(e.keyCode == 13){
+                const params = {
+                    page: self.val()
+                };
+                get_users(params);
+            }
+        });
+
+        $(document).on('click', '.next-page', function(e) {
+            const total_pages = parseInt($('.total-pages').text());
+            const pageCurrent = parseInt($('#current-page-selector').val());
+
+
+            if(pageCurrent < total_pages) {
+                const pageNext = pageCurrent + 1;
+
+                const params = {
+                    page: pageNext
+                };
+                get_users(params);
+            }
+        });
+
+        // Call first
+        const params = {
+            page: 1
+        };
+        get_users(params);
     });
 }(jQuery));
