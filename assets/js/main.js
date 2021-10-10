@@ -16,8 +16,8 @@
         let elInfoProgress = $('#progress');
 
         const config = {
-            delimiter: "",	// auto-detect
-            newline: "",	// auto-detect
+            delimiter: "",  // auto-detect
+            newline: "",    // auto-detect
             quoteChar: '"',
             escapeChar: '"',
             header: false,
@@ -79,6 +79,8 @@
                     Papa.parse(file, config);
                 }
             }
+
+            elInfoTotalFiles.text(total_files);
         });
 
         function read_a_file_completed(results, file) {
@@ -154,7 +156,7 @@
         }
 
         function handle_file_ds_tong_hop(data_file) {
-            data_file.splice(0, 12);
+            //data_file.splice(0, 12);
 
             //console.log(data_file);
             let data_file_right = [];
@@ -163,7 +165,12 @@
                 const row = data_file[i];
                 const row_tmp = {};
                 const value_check = row[1] + '';
-                if (value_check !== undefined && value_check.length) {
+
+
+                if (value_check !== undefined && value_check != 'undefined' && value_check.length) {
+                    //console.log(value_check);
+
+
                     data_ma_to_khai.push(row[1]);
 
                     row_tmp.name = row[1];
@@ -178,7 +185,7 @@
 
                     data_file_right.push(row_tmp);
                 } else {
-                    return false;
+                    //continue;
                 }
             });
 
@@ -191,6 +198,7 @@
             if (total_files_read_done === total_files) {
                 total_data_insert = datas.length;
                 total_pages = total_data_insert / total_data_per_insert;
+                elInfoTotalRows.text(total_data_insert);
 
                 if (total_data_insert % total_data_per_insert !== 0) {
                     total_pages = Math.floor(total_data_insert / total_data_per_insert) + 1;
