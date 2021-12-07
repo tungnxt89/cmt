@@ -67,6 +67,9 @@ class CMT {
 		wp_register_script('papaparse', self::$URL_PLUGIN . 'assets/js/papaparse.min.js');
 		wp_enqueue_script('papaparse');
 
+		wp_register_script('barcode', self::$URL_PLUGIN . 'assets/js/barcode.js', ['jquery', 'wp-api-fetch'], uniqid());
+		wp_enqueue_script('barcode');
+
 		wp_register_script('main', self::$URL_PLUGIN . 'assets/js/main.js', ['jquery', 'wp-api-fetch'], uniqid());
 		wp_enqueue_script('main');
 

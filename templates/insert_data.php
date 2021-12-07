@@ -13,6 +13,10 @@
         <label>Nhập danh sách mã tổng hợp (chứa địa chỉ cụ thể)</label>
         <input type="file" name="file_address_csv" webkitdirectory multiple>
     </div>
+    <div class="el-upload left">
+        <label>File Barcode</label>
+        <input type="file" name="file_barcode_csv" accept=".csv">
+    </div>
     
     <div class="clear"></div>
 

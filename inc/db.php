@@ -224,6 +224,10 @@ class CMT_DB {
 
 		return $total;
 	}
+
+	public function create_box_id() {
+		
+	}
 }
 
 CMT_DB::instance();
