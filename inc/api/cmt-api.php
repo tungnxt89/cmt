@@ -153,7 +153,7 @@ class CMT_API {
 		$cmt_db = CMT_DB::instance();
 
 		try {
-			$data_update = $request->get_param( 'data' ) ?? [];
+			$data_search = $request->get_param( 'data' ) ?? [];
 			$page        = $request->get_param( 'page' ) ?? 0;
 			$success     = 0;
 
@@ -168,7 +168,7 @@ class CMT_API {
 				$filter->sex      = $data['sex'];
 				$filter->address  = $data['address_search'];
 
-				$result = $cmt_db->check_update_data_users( $filter, $data );
+				$result = $cmt_db->check_update_cccd( $filter, $data );
 				if ( ! is_bool( $result ) && $result ) {
 
 				}

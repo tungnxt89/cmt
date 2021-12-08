@@ -225,6 +225,54 @@ class CMT_DB {
 		return $total;
 	}
 
+	/**
+	 * Check mã tờ khai đã được inserted
+	 *
+	 * @return bool|int
+	 * @throws Exception
+	 */
+	public function check_update_cccd( Filter_User $filter_user, array $data_update ) {
+		$query = $this->wpdb->prepare(
+			"
+				UPDATE $this->tb_cmt_users
+				SET address_full = %s
+				WHERE name = %s
+				AND sex = %s
+				AND birthday = %s
+				AND address LIKE %s
+			",
+			$data_update['cccd'],
+			$filter_user->name,
+			$filter_user->sex,
+			$filter_user->birthday,
+			'%'.trim($filter_user->address).'%'
+		);
+
+		$result = $this->wpdb->query( $query );
+
+		if ( $this->wpdb->last_error ) {
+			error_log( __FUNCTION__ . ': ' . $this->wpdb->last_error );
+		}
+
+		return $result;
+	}
+
+	public function get_increment_of_box() {
+		$query =
+			"SELECT MAX(box_id)
+			FROM $this->tb_cmt_users
+			";
+
+		$box_id = (int) $this->wpdb->get_var( $query );
+		$box_id++;
+
+		if ( $this->wpdb->last_error ) {
+			error_log( __FUNCTION__ . ': ' . $this->wpdb->last_error );
+		}
+
+		return $box_id;
+	}
+
 	public function create_box_id() {
 		
 	}
