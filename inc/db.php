@@ -235,13 +235,16 @@ class CMT_DB {
 		$query = $this->wpdb->prepare(
 			"
 				UPDATE $this->tb_cmt_users
-				SET so_cccd = %s
+				SET so_cccd = %s,
+				box_id = %s
 				WHERE name = %s
+				AND box_id = 0
 				AND sex = %s
 				AND birthday = %s
 				AND address_full = %s
 			",
 			$data_update['cccd'],
+			$data_update['box_id'],
 			$filter_user->name,
 			$filter_user->sex,
 			$filter_user->birthday,
@@ -264,7 +267,6 @@ class CMT_DB {
 			";
 
 		$box_id = (int) $this->wpdb->get_var( $query );
-		$box_id++;
 
 		if ( $this->wpdb->last_error ) {
 			error_log( __FUNCTION__ . ': ' . $this->wpdb->last_error );

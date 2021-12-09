@@ -185,6 +185,7 @@ class CMT_API {
 				$filter->birthday = $birthday_search;
 				$filter->sex      = $data['sex'];
 				$filter->address  = $address_search;
+				$data['box_id'] = intval($data['box_id']) + 1;
 
 				$result = $cmt_db->check_update_cccd( $filter, $data );
 				if ( ! is_bool( $result ) && $result ) {

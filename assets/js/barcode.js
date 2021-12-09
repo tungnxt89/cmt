@@ -4,6 +4,7 @@
         let total_data_per_insert = 5;
         let total_pages = 0;
         let page = 1;
+        let data_barcode = [];
 
         const config = {
             delimiter: "",  // auto-detect
@@ -50,8 +51,6 @@
         }
 
         function handle_file_barcode(data_file) {
-            let data_barcode = [];
-
             $.each(data_file, function (i) {
                 const row = data_file[i];
 
@@ -76,13 +75,18 @@
                 total_pages = Math.floor(total_data_insert / total_data_per_insert) + 1;
             }
 
+            console.log(total_pages);
+
             //Send data first
             const data_send = data_barcode.slice(0, total_data_per_insert);
+
+            const box_id = $('input[name=box_id_max]').val();
 
             const params = {
                 page: 1,
                 total_pages: total_pages,
-                data: data_send
+                data: data_send,
+                box_id: box_id,
             };
 
             console.log(params);
@@ -109,21 +113,18 @@
                         const from = (params.page - 1) * total_data_per_insert;
                         const to = from + total_data_per_insert;
 
-                        if (params.data_insert !== undefined) {
-                            params.data_insert = datas.slice(from, to);
-                            params.data_ma_to_khai_insert = data_ma_to_khai.slice(from, to);
-                        } else if (params.data_update !== undefined) {
-                            params.data_update = datas.slice(from, to);
+                        if (params.data_send !== undefined) {
+                            params.data = data_barcode.slice(from, to);
                         }
 
-                        const progressPercent = (params.page/total_pages * 100).toFixed(2);
-                        elInfoProgress.text(progressPercent + '%');
+                        //const progressPercent = (params.page/total_pages * 100).toFixed(2);
+                        //elInfoProgress.text(progressPercent + '%');
 
                         handleAjax(url, params);
                     } else {
-                        elInfoProgress.text('Hoàn thành');
-                        alert('Tien trinh da hoan thanh');
-                        window.location.reload()
+                        //elInfoProgress.text('Hoàn thành');
+                        //alert('Tien trinh da hoan thanh');
+                        //window.location.reload()
                     }
                 }
             }).catch((err) => {

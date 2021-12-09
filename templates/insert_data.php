@@ -2,6 +2,9 @@
 /**
  * Template Insert data
  */
+
+$cmt_db = CMT_DB::instance();
+$box_id_max =  $cmt_db->get_increment_of_box();
 ?>
 
 <form action="" enctype="multipart/form-data" id="file_csv">
@@ -16,6 +19,7 @@
     <div class="el-upload left">
         <label>File Barcode</label>
         <input type="file" name="file_barcode_csv" accept=".csv">
+        <input type="text" name="box_id_max" value="<?php echo $box_id_max ?>" disabled />
     </div>
     
     <div class="clear"></div>
