@@ -53,15 +53,17 @@
             let data_barcode = [];
 
             $.each(data_file, function (i) {
-                const row = data_file[i][0];
-                const row_arr = row.split('|');
+                const row = data_file[i];
+
+                //const row_arr = row.split('|');
+                
                 let info = {};
-                info.cccd = row_arr[0];
-                info.name = row_arr[2];
-                info.birthday = row_arr[3];
-                info.sex = row_arr[4];
-                info.address_full = row_arr[5];
-                info.ngay_cap = row_arr[6];
+                info.cccd = row[0];
+                info.name = row[2];
+                info.birthday = row[3];
+                info.sex = row[4];
+                info.address_full = row[5];
+                info.ngay_cap = row[6];
 
                 data_barcode.push(info);
             });

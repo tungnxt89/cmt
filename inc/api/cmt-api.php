@@ -157,16 +157,34 @@ class CMT_API {
 			$page        = $request->get_param( 'page' ) ?? 0;
 			$success     = 0;
 
-			if ( empty( $data_update ) || empty( $page ) ) {
+			if ( empty( $data_search ) || empty( $page ) ) {
 				throw new Exception( 'Tham số không hợp lệ' );
 			}
 
-			foreach ( $data_update as $data ) {
+			foreach ( $data_search as $data ) {
+				$birthday_search = substr($data['birthday'], 0, 2) . '-' . substr($data['birthday'], 2, 2) . '-' . substr($data['birthday'], 4, 4);
+				
+				$address_arr = explode(',', $data['address_full']);
+				$count_address_arr = count($address_arr);
+				$index_country = $count_address_arr - 1;
+				$index_district = $count_address_arr - 2;
+				$index_ward = $count_address_arr - 3;
+
+				$address_search = '';
+				for ($i = 0; $i < $index_ward; $i++) {
+					$address_search .= $address_arr[$i] . ', ';
+				}
+
+				$address_search .= 'Phường' . $address_arr[$index_ward] . ', ';
+				$address_search .= 'Quận' . $address_arr[$index_district] . ', ';
+				$address_search .= 'Thành phố' . $address_arr[$index_country];
+				
+				
 				$filter           = new Filter_User();
 				$filter->name     = $data['name'];
-				$filter->birthday = $data['birthday'];
+				$filter->birthday = $birthday_search;
 				$filter->sex      = $data['sex'];
-				$filter->address  = $data['address_search'];
+				$filter->address  = $address_search;
 
 				$result = $cmt_db->check_update_cccd( $filter, $data );
 				if ( ! is_bool( $result ) && $result ) {

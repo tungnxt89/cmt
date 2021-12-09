@@ -235,17 +235,17 @@ class CMT_DB {
 		$query = $this->wpdb->prepare(
 			"
 				UPDATE $this->tb_cmt_users
-				SET address_full = %s
+				SET so_cccd = %s
 				WHERE name = %s
 				AND sex = %s
 				AND birthday = %s
-				AND address LIKE %s
+				AND address_full = %s
 			",
 			$data_update['cccd'],
 			$filter_user->name,
 			$filter_user->sex,
 			$filter_user->birthday,
-			'%'.trim($filter_user->address).'%'
+			trim($filter_user->address)
 		);
 
 		$result = $this->wpdb->query( $query );
