@@ -1,6 +1,6 @@
 <?php
 include_once 'insert_data.php';
-// include_once 'list-users.php';
+include_once 'search.php';
 ?>
 
 <div id="wrapper-list-users"></div>

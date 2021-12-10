@@ -23,8 +23,8 @@ class CMT {
 	public function __construct() {
 		add_action( 'activated_plugin', array( $this, 'install_tables' ) );
 
-		self::$URL_PLUGIN = plugin_dir_url(__FILE__);
-		self::$PATH_PLUGIN = plugin_dir_path(__FILE__);
+		self::$URL_PLUGIN  = plugin_dir_url( __FILE__ );
+		self::$PATH_PLUGIN = plugin_dir_path( __FILE__ );
 
 		$this->includes();
 		$this->install_tables();
@@ -43,38 +43,45 @@ class CMT {
 	}
 
 	public function init() {
-		add_action( 'admin_menu', array( $this,'menu') );
-		add_action( 'admin_enqueue_scripts', array( $this,'enqueue_scripts') );
+		add_action( 'admin_menu', array( $this, 'menu' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		CMT_API::instance();
 	}
 
 	public function menu() {
-		add_menu_page( 'CMT',
-			'CMT', 'administrator',
-			'cmt', array( $this, 'output' ),
-			'', 10
+		add_menu_page(
+			'CMT',
+			'CMT',
+			'administrator',
+			'cmt',
+			array( $this, 'output' ),
+			'',
+			10
 		);
 	}
 
 	public function enqueue_scripts() {
 		$screen = get_current_screen();
 
-		if(!$screen || 'toplevel_page_cmt' !== $screen->id) {
+		if ( ! $screen || 'toplevel_page_cmt' !== $screen->id ) {
 			return;
 		}
 
-		wp_register_script('papaparse', self::$URL_PLUGIN . 'assets/js/papaparse.min.js');
-		wp_enqueue_script('papaparse');
+		wp_register_script( 'papaparse', self::$URL_PLUGIN . 'assets/js/papaparse.min.js' );
+		wp_enqueue_script( 'papaparse' );
 
-		wp_register_script('barcode', self::$URL_PLUGIN . 'assets/js/barcode.js', ['jquery', 'wp-api-fetch'], uniqid());
-		wp_enqueue_script('barcode');
+		wp_register_script( 'barcode', self::$URL_PLUGIN . 'assets/js/barcode.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
+		wp_enqueue_script( 'barcode' );
 
-		wp_register_script('main', self::$URL_PLUGIN . 'assets/js/main.js', ['jquery', 'wp-api-fetch'], uniqid());
-		wp_enqueue_script('main');
+		wp_register_script( 'search', self::$URL_PLUGIN . 'assets/js/search.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
+		wp_enqueue_script( 'search' );
 
-		wp_register_style('cmt', self::$URL_PLUGIN . 'assets/css/cmt.css', [], uniqid());
-		wp_enqueue_style('cmt');
+		wp_register_script( 'main', self::$URL_PLUGIN . 'assets/js/main.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
+		wp_enqueue_script( 'main' );
+
+		wp_register_style( 'cmt', self::$URL_PLUGIN . 'assets/css/cmt.css', [], uniqid() );
+		wp_enqueue_style( 'cmt' );
 	}
 
 	public function output() {

@@ -16,7 +16,7 @@ class CMT_DB {
 
 		$this->wpdb         = $wpdb;
 		$this->tb_cmt_users = $wpdb->prefix . 'cmt_users';
-		$this->limit = get_option('posts_per_page', $this->limit);
+		$this->limit        = get_option( 'posts_per_page', $this->limit );
 	}
 
 	public static function instance() {
@@ -47,6 +47,7 @@ class CMT_DB {
 				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 				box_id int default 0,
 				ma_dsdn varchar(255) NOT NULL,
+				ngay_khai date NOT NULL,
 				ma_to_khai varchar(255) NOT NULL,
 				name varchar(255) NOT NULL,
 				so_cccd varchar(255) default 0,
@@ -79,7 +80,7 @@ class CMT_DB {
 	 */
 	public function insert_data_users( array $data, array $data_ma_to_khai_insert ) {
 		$query = "
-			INSERT INTO $this->tb_cmt_users (ma_dsdn, ma_to_khai, name, so_cccd, birthday, sex, address)
+			INSERT INTO $this->tb_cmt_users (ma_dsdn, ngay_khai, ma_to_khai, name, so_cccd, birthday, sex, address)
 			VALUES
 		";
 
@@ -90,8 +91,11 @@ class CMT_DB {
 				continue;
 			}
 
-			$row = ' (';
+			$data_row['ngay_khai'] = '20' . substr( $data_row['ma_dsdn'], 2, 2 ) . '-' . substr( $data_row['ma_dsdn'], 4, 2 ) . '-' . substr( $data_row['ma_dsdn'], 6, 2 );
+
+			$row  = ' (';
 			$row .= "'{$data_row['ma_dsdn']}',";
+			$row .= "'{$data_row['ngay_khai']}',";
 			$row .= "'{$data_row['ma_to_khai']}',";
 			$row .= "'{$data_row['name']}',";
 			$row .= "'{$data_row['so_cccd']}',";
@@ -108,7 +112,7 @@ class CMT_DB {
 		}
 
 		$data_row_str = implode( ',', $data_row_arr );
-		$query        .= $data_row_str;
+		$query       .= $data_row_str;
 
 		$execute = $this->wpdb->query( $query );
 
@@ -163,7 +167,7 @@ class CMT_DB {
 			$filter_user->name,
 			$filter_user->sex,
 			$filter_user->birthday,
-			'%'.trim($filter_user->address).'%'
+			'%' . trim( $filter_user->address ) . '%'
 		);
 
 		$result = $this->wpdb->query( $query );
@@ -183,12 +187,35 @@ class CMT_DB {
 	 * @throws Exception
 	 */
 	public function get_users( Filter_User $filter ) {
-		$offset = $this->limit * ($filter->page -1);
+		$offset = $this->limit * ( $filter->page - 1 );
+
+		$WHERE = ' WHERE 1=1 ';
+
+		if ( $filter->box_id ) {
+			$WHERE .= $this->wpdb->prepare( 'AND box_id = %s ', $filter->box_id );
+		}
+
+		if ( $filter->name ) {
+			$WHERE .= $this->wpdb->prepare( 'AND name = %s ', $filter->name );
+		}
+
+		if ( $filter->birthday ) {
+			$WHERE .= $this->wpdb->prepare( 'AND birthday = %s ', $filter->birthday );
+		}
+
+		if ( $filter->sex ) {
+			$WHERE .= $this->wpdb->prepare( 'AND sex = %s ', $filter->sex );
+		}
+
+		$group_by = 'ngay_khai';
+		$sort     = 'DESC';
 
 		$query = $this->wpdb->prepare(
 			"
 			SELECT *
 			FROM $this->tb_cmt_users
+			$WHERE
+			ORDER BY $group_by $sort
 			LIMIT %d, %d
 			",
 			$offset,
@@ -248,7 +275,7 @@ class CMT_DB {
 			$filter_user->name,
 			$filter_user->sex,
 			$filter_user->birthday,
-			trim($filter_user->address)
+			trim( $filter_user->address )
 		);
 
 		$result = $this->wpdb->query( $query );
@@ -276,7 +303,7 @@ class CMT_DB {
 	}
 
 	public function create_box_id() {
-		
+
 	}
 }
 
