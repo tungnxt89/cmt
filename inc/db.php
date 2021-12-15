@@ -48,6 +48,8 @@ class CMT_DB {
 				box_id int default 0,
 				ma_dsdn varchar(255) NOT NULL,
 				ngay_khai date NOT NULL,
+				noi_tra varchar(255) NOT NULL,
+				lay_ho varchar(255) NOT NULL,
 				ma_to_khai varchar(255) NOT NULL,
 				name varchar(255) NOT NULL,
 				so_cccd varchar(255) default 0,
@@ -56,6 +58,7 @@ class CMT_DB {
 				address varchar(255) NOT NULL,
 				address_full varchar(255) NOT NULL,
 				returnx int(1) default 0,
+				note text,
 				PRIMARY KEY (id),
 				KEY box_id (box_id),
 				KEY ma_dsdn (ma_dsdn),
@@ -91,7 +94,7 @@ class CMT_DB {
 				continue;
 			}
 
-			$data_row['ngay_khai'] = '20' . substr( $data_row['ma_dsdn'], 2, 2 ) . '-' . substr( $data_row['ma_dsdn'], 4, 2 ) . '-' . substr( $data_row['ma_dsdn'], 6, 2 );
+			$data_row['ngay_khai'] = '20' . substr( $data_row['ma_to_khai'], 2, 2 ) . '-' . substr( $data_row['ma_to_khai'], 4, 2 ) . '-' . substr( $data_row['ma_to_khai'], 6, 2 );
 
 			$row  = ' (';
 			$row .= "'{$data_row['ma_dsdn']}',";
