@@ -5,6 +5,7 @@
 
 $cmt_db = CMT_DB::instance();
 $box_id_max =  $cmt_db->get_increment_of_box();
+$upload_arr = wp_upload_dir();
 ?>
 
 <form action="" enctype="multipart/form-data" id="file_csv">
@@ -21,6 +22,8 @@ $box_id_max =  $cmt_db->get_increment_of_box();
         <input type="file" name="file_barcode_csv" accept=".csv">
         <input type="text" name="box_id_max" value="<?php echo $box_id_max ?>" disabled />
     </div>
+
+    <input type="hidden" name="file_ds_noi_tra" value="<?php echo $upload_arr['baseurl'] . '/cmt/ds-noi-tra.csv' ?>">
     
     <div class="clear"></div>
 

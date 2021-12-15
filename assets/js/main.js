@@ -15,6 +15,8 @@
         let elInfoTotalRows = $('#total-rows');
         let elInfoProgress = $('#progress');
 
+        let data_noi_tra = [];
+
         const config = {
             delimiter: "",  // auto-detect
             newline: "",    // auto-detect
@@ -83,6 +85,13 @@
             elInfoTotalFiles.text(total_files);
         });
 
+        // Read file ds-noi-tra
+        const urlFileDsNoiTra = $('input[name=file_ds_noi_tra]').val();
+        console.log(urlFileDsNoiTra);
+        config.typeFile = 'ds_noi_tra';
+        config.download = true;
+        Papa.parse(urlFileDsNoiTra, config);
+
         function read_a_file_completed(results, file) {
             const config = $(this)[0];
             const data_file = results.data;
@@ -93,6 +102,9 @@
                     break;
                 case 'ma_address':
                     handle_file_ds_tong_hop(data_file);
+                    break;
+                case 'ds_noi_tra':
+                    handle_file_ds_noi_tra(data_file);
                     break;
                 default:
                     break;
@@ -112,12 +124,19 @@
                     data_ma_to_khai.push(row[1]);
 
                     row_tmp.ma_dsdn = row[0];
+                    row_tmp.noi_tra = '';
+                    row_tmp.lay_ho  = '';
                     row_tmp.ma_to_khai = row[1];
                     row_tmp.name = row[2];
                     row_tmp.so_cccd = row[4];
                     row_tmp.birthday = row[7];
                     row_tmp.sex = row[9];
                     row_tmp.address = row[10];
+
+                    if(undefined !== data_noi_tra[row_tmp.ma_dsdn]) {
+                        row_tmp.noi_tra = data_noi_tra[row_tmp.ma_dsdn];
+                    }
+
                     data_file_right.push(row_tmp);
                 } else {
                     return false;
@@ -218,6 +237,18 @@
 
         }
 
+        function handle_file_ds_noi_tra(data_file) {
+            $.each(data_file, function(i) {
+                const row = data_file[i];
+
+                if(row[0].length && row[1].length) {
+                    data_noi_tra[row[0]] = row[1];
+                }
+            })
+
+            console.log(data_noi_tra);
+        }
+
         function get_users(params) {
             let url = '/cmt/v1/users';
 
@@ -228,7 +259,6 @@
             }).then((res) => {
                 const {status, message, data} = res;
                 if (status === 'success') {
-                    console.log(data);
                     const el_wrapper_list_courses = $('#wrapper-list-users');
                     const el_tablenav = $('.tablenav');
 
