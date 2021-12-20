@@ -7,7 +7,7 @@
 		const data_barcode = [];
 
 		const config = {
-			delimiter: '', // auto-detect
+			delimiter: ';', // auto-detect
 			newline: '', // auto-detect
 			quoteChar: '"',
 			escapeChar: '"',
@@ -54,11 +54,10 @@
 			$.each( data_file, function( i ) {
 				const row = data_file[ i ][ 0 ];
 
-				//console.log(row);
-
 				const row_arr = row.split( '|' );
-
+				let stt = i + 1;
 				const info = {};
+				info.stt = stt;
 				info.cccd = row_arr[ 0 ];
 				info.name = row_arr[ 2 ];
 				info.birthday = row_arr[ 3 ];
@@ -77,7 +76,7 @@
 				total_pages = Math.floor( total_data_insert / total_data_per_insert ) + 1;
 			}
 
-			console.log( total_pages );
+			//console.log( total_pages );
 
 			//Send data first
 			const data_send = data_barcode.slice( 0, total_data_per_insert );

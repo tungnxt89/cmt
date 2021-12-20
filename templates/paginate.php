@@ -10,7 +10,7 @@
 ?>
 
 <div class="tablenav-pages">
-	<span class="displaying-num"><?php echo $total_users ?> items</span>
+	<span class="displaying-num"><?php echo $total_row ?> items</span>
 	<span class="pagination-links">
 		<span class="first-page button <?php echo $prev_page ? '' : 'disabled'?>" aria-hidden="true">«</span>
 		<span class="prev-page button <?php echo $prev_page ? '' : 'disabled'?>" aria-hidden="true">‹</span>

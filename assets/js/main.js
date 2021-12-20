@@ -16,6 +16,7 @@
         let elInfoProgress = $('#progress');
 
         let data_noi_tra = [];
+        let data_lay_ho = [];
 
         const config = {
             delimiter: "",  // auto-detect
@@ -92,6 +93,13 @@
         config.download = true;
         Papa.parse(urlFileDsNoiTra, config);
 
+        // Read file ds-lay-ho
+        const urlFileDsLayHo = $('input[name=file_ds_lay_ho]').val();
+        console.log(urlFileDsLayHo);
+        config.typeFile = 'ds_lay_ho';
+        config.download = true;
+        Papa.parse(urlFileDsLayHo, config);
+
         function read_a_file_completed(results, file) {
             const config = $(this)[0];
             const data_file = results.data;
@@ -105,6 +113,9 @@
                     break;
                 case 'ds_noi_tra':
                     handle_file_ds_noi_tra(data_file);
+                    break;
+                case 'ds_noi_tra':
+                    handle_file_ds_lay_ho(data_file);
                     break;
                 default:
                     break;
@@ -137,6 +148,10 @@
                         row_tmp.noi_tra = data_noi_tra[row_tmp.ma_dsdn];
                     }
 
+                    if(undefined !== data_lay_ho[row_tmp.ma_to_khai]) {
+                        row_tmp.lay_ho = data_lay_ho[row_tmp.ma_to_khai];
+                    }
+
                     data_file_right.push(row_tmp);
                 } else {
                     return false;
@@ -144,6 +159,8 @@
             });
 
             datas = datas.concat(data_file_right);
+
+            console.log(datas);
 
             total_files_read_done++;
 
@@ -246,7 +263,19 @@
                 }
             })
 
-            console.log(data_noi_tra);
+            //console.log(data_noi_tra);
+        }
+
+        function handle_file_ds_lay_ho(data_file) {
+            $.each(data_file, function(i) {
+                const row = data_file[i];
+
+                if(row[0].length && row[1].length) {
+                    data_lay_ho[row[0]] = row[1];
+                }
+            })
+
+            //console.log(data_noi_tra);
         }
 
         function get_users(params) {

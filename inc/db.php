@@ -45,7 +45,8 @@ class CMT_DB {
 			"
 			CREATE TABLE IF NOT EXISTS $this->tb_cmt_users(
 				id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-				box_id int default 0,
+				box_id bigint(20) default 0,
+				stt_barcode int default 0,
 				ma_dsdn varchar(255) NOT NULL,
 				ngay_khai date NOT NULL,
 				noi_tra varchar(255) NOT NULL,
@@ -83,7 +84,7 @@ class CMT_DB {
 	 */
 	public function insert_data_users( array $data, array $data_ma_to_khai_insert ) {
 		$query = "
-			INSERT INTO $this->tb_cmt_users (ma_dsdn, ngay_khai, ma_to_khai, name, so_cccd, birthday, sex, address)
+			INSERT INTO $this->tb_cmt_users (ma_dsdn, ngay_khai, noi_tra, lay_ho, ma_to_khai, name, so_cccd, birthday, sex, address)
 			VALUES
 		";
 
@@ -99,6 +100,8 @@ class CMT_DB {
 			$row  = ' (';
 			$row .= "'{$data_row['ma_dsdn']}',";
 			$row .= "'{$data_row['ngay_khai']}',";
+			$row .= "'{$data_row['noi_tra']}',";
+			$row .= "'{$data_row['lay_ho']}',";
 			$row .= "'{$data_row['ma_to_khai']}',";
 			$row .= "'{$data_row['name']}',";
 			$row .= "'{$data_row['so_cccd']}',";
@@ -192,14 +195,27 @@ class CMT_DB {
 	public function get_users( Filter_User $filter ) {
 		$offset = $this->limit * ( $filter->page - 1 );
 
+		$fields_arr = get_object_vars($filter);
+		unset($fields_arr['page']);
+		$fields_arr = array_keys($fields_arr);
+		$select_fields = implode(',', $fields_arr);
+
 		$WHERE = ' WHERE 1=1 ';
 
 		if ( $filter->box_id ) {
 			$WHERE .= $this->wpdb->prepare( 'AND box_id = %s ', $filter->box_id );
 		}
 
+		if ( $filter->ma_dsdn ) {
+			$WHERE .= $this->wpdb->prepare( 'AND ma_dsdn LIKE "%s" ', '%' . $filter->ma_dsdn . '%' );
+		}
+
+		if ( $filter->noi_tra ) {
+			$WHERE .= $this->wpdb->prepare( 'AND noi_tra LIKE %s ', '%' . $filter->noi_tra . '%' );
+		}
+
 		if ( $filter->name ) {
-			$WHERE .= $this->wpdb->prepare( 'AND name = %s ', $filter->name );
+			$WHERE .= $this->wpdb->prepare( 'AND name LIKE %s ', '%' . $filter->name . '%' );
 		}
 
 		if ( $filter->birthday ) {
@@ -215,7 +231,7 @@ class CMT_DB {
 
 		$query = $this->wpdb->prepare(
 			"
-			SELECT *
+			SELECT $select_fields
 			FROM $this->tb_cmt_users
 			$WHERE
 			ORDER BY $group_by $sort
@@ -226,6 +242,17 @@ class CMT_DB {
 		);
 
 		$result = $this->wpdb->get_results( $query );
+
+		$query_count = "SELECT COUNT(id) AS total
+			FROM $this->tb_cmt_users
+			$WHERE
+			";
+
+		$total_items = (int) $this->wpdb->get_var( $query_count );
+
+		var_dump($result);die;
+
+		//$result['total_row'] = $total_items;
 
 		if ( $this->wpdb->last_error ) {
 			error_log( __FUNCTION__ . ': ' . $this->wpdb->last_error );
@@ -266,7 +293,8 @@ class CMT_DB {
 			"
 				UPDATE $this->tb_cmt_users
 				SET so_cccd = %s,
-				box_id = %s
+				box_id = %s,
+				stt_barcode = %d
 				WHERE name = %s
 				AND box_id = 0
 				AND sex = %s
@@ -275,6 +303,7 @@ class CMT_DB {
 			",
 			$data_update['cccd'],
 			$data_update['box_id'],
+			$data_update['stt'],
 			$filter_user->name,
 			$filter_user->sex,
 			$filter_user->birthday,

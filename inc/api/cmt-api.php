@@ -143,6 +143,8 @@ class CMT_API {
 			$filter->page     = $page;
 			$filter->name     = $request->get_param( 'name' ) ?? '';
 			$filter->box_id   = $request->get_param( 'box_id' ) ?? '';
+			$filter->ma_dsdn   = $request->get_param( 'ma_dsdn' ) ?? '';
+			$filter->noi_tra   = $request->get_param( 'noi_tra' ) ?? '';
 			$filter->birthday = $request->get_param( 'birthday' ) ?? '';
 			$filter->sex      = $request->get_param( 'sex' ) ?? '';
 			$filter->address  = $request->get_param( 'address' ) ?? '';
@@ -156,7 +158,7 @@ class CMT_API {
 			ob_clean();
 
 			$res->data->content  = $content;
-			$res->data->paginate = $this->get_paginate( $page );
+			$res->data->paginate = $this->get_paginate( $page, $users['total_row'] );
 			$res->status         = 'success';
 		} catch ( Throwable $e ) {
 			$res->message = $e->getMessage();
@@ -223,14 +225,14 @@ class CMT_API {
 		wp_send_json( $res );
 	}
 
-	protected function get_paginate( int $page_current ) {
+	protected function get_paginate( int $page_current, int $total_row ) {
 		$cmt_db         = CMT_DB::instance();
-		$total_users    = $cmt_db->total_users();
+		//$total_users    = $cmt_db->total_users();
 		$posts_per_page = get_option( 'posts_per_page', 10 );
 
-		$total_pages = floor( $total_users / $posts_per_page );
+		$total_pages = floor( $total_row / $posts_per_page );
 
-		if ( $total_users % $posts_per_page !== 0 ) {
+		if ( $total_row % $posts_per_page !== 0 ) {
 			$total_pages++;
 		}
 

@@ -24,6 +24,7 @@ $upload_arr = wp_upload_dir();
     </div>
 
     <input type="hidden" name="file_ds_noi_tra" value="<?php echo $upload_arr['baseurl'] . '/cmt/ds-noi-tra.csv' ?>">
+    <input type="hidden" name="file_ds_lay_ho" value="<?php echo $upload_arr['baseurl'] . '/cmt/ds-lay-ho.csv' ?>">
     
     <div class="clear"></div>
 
