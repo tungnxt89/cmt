@@ -52,6 +52,9 @@ $totals = $cmt_db->total_users();
 	<tbody id="the-list">
 	<?php
 	foreach ( $users as $user ) {
+		if( ! is_object( $user ) ) {
+			continue;
+		}
 		?>
 		<tr id="post-<?php echo $user->id; ?>"
 			class="iedit author-self level-0 post-1 type-post status-publish format-standard hentry category-uncategorized entry">
@@ -66,7 +69,7 @@ $totals = $cmt_db->total_users();
 			</td>
 			<td class="" data-colname="stt-box">
 				<strong>
-					<?php echo $user->stt_box ?? ''; ?>
+					<?php echo $user->stt_barcode; ?>
 				</strong>
 			</td>
 			<td class="author column-author" data-colname="Author">

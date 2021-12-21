@@ -246,13 +246,11 @@ class CMT_DB {
 		$query_count = "SELECT COUNT(id) AS total
 			FROM $this->tb_cmt_users
 			$WHERE
-			";
+		";
 
 		$total_items = (int) $this->wpdb->get_var( $query_count );
 
-		var_dump($result);die;
-
-		//$result['total_row'] = $total_items;
+		$result['total_row'] = $total_items;
 
 		if ( $this->wpdb->last_error ) {
 			error_log( __FUNCTION__ . ': ' . $this->wpdb->last_error );
@@ -309,6 +307,8 @@ class CMT_DB {
 			$filter_user->birthday,
 			trim( $filter_user->address )
 		);
+
+		error_log("SQL:" . $query);
 
 		$result = $this->wpdb->query( $query );
 

@@ -176,6 +176,7 @@ class CMT_API {
 		$cmt_db = CMT_DB::instance();
 
 		try {
+			$box_id = $request->get_param( 'box_id' ) ?? 0;
 			$data_search = $request->get_param( 'data' ) ?? [];
 			$page        = $request->get_param( 'page' ) ?? 0;
 			$success     = 0;
@@ -207,7 +208,7 @@ class CMT_API {
 				$filter->birthday = $birthday_search;
 				$filter->sex      = $data['sex'];
 				$filter->address  = $address_search;
-				$data['box_id']   = intval( $data['box_id'] ) + 1;
+				$data['box_id']   = $box_id + 1;
 
 				$result = $cmt_db->check_update_cccd( $filter, $data );
 				if ( ! is_bool( $result ) && $result ) {
