@@ -34,8 +34,9 @@ class CMT {
 	private function includes() {
 		require_once 'inc/db.php';
 		require_once 'inc/api/cmt-api.php';
-		require_once 'inc/models/filter-base.php';
-		require_once 'inc/models/filter_users.php';
+		require_once 'inc/filters/filter-base.php';
+		require_once 'inc/filters/filter_users.php';
+		require_once 'inc/models/users.php';
 	}
 
 	public function install_tables() {
@@ -68,8 +69,16 @@ class CMT {
 			return;
 		}
 
+		// Styles
+		wp_register_style( 'cmt', self::$URL_PLUGIN . 'assets/css/cmt.css', [], uniqid() );
+		wp_enqueue_style( 'cmt' );
+
+		// Scripts
 		wp_register_script( 'papaparse', self::$URL_PLUGIN . 'assets/js/papaparse.min.js' );
 		wp_enqueue_script( 'papaparse' );
+
+		wp_register_script( 'style', self::$URL_PLUGIN . 'assets/js/style.js' );
+		wp_enqueue_script( 'style' );
 
 		wp_register_script( 'barcode', self::$URL_PLUGIN . 'assets/js/barcode.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
 		wp_enqueue_script( 'barcode' );
@@ -79,9 +88,6 @@ class CMT {
 
 		wp_register_script( 'main', self::$URL_PLUGIN . 'assets/js/main.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
 		wp_enqueue_script( 'main' );
-
-		wp_register_style( 'cmt', self::$URL_PLUGIN . 'assets/css/cmt.css', [], uniqid() );
-		wp_enqueue_style( 'cmt' );
 	}
 
 	public function output() {
