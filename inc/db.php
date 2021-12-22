@@ -39,6 +39,7 @@ class CMT_DB {
 	 *
 	 * @return bool|int
 	 * @throws Exception
+	 * Xã Ea Riêng, Huyện M'Drắk, Tỉnh Đắk Lắk
 	 */
 	public function create_tb_users() {
 		$execute = $this->wpdb->query(
@@ -52,12 +53,12 @@ class CMT_DB {
 				noi_tra varchar(255) NOT NULL,
 				lay_ho varchar(255) NOT NULL,
 				ma_to_khai varchar(255) NOT NULL,
-				name varchar(255) NOT NULL,
+				name varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
 				so_cccd varchar(255) default 0,
 				birthday varchar(255) NOT NULL,
 				sex varchar(5) NOT NULL,
-				address varchar(255) NOT NULL,
-				address_full varchar(255) NOT NULL,
+				address varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+				address_full varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
 				returnx int(1) default 0,
 				note text,
 				PRIMARY KEY (id),
@@ -119,6 +120,8 @@ class CMT_DB {
 
 		$data_row_str = implode( ',', $data_row_arr );
 		$query       .= $data_row_str;
+
+		$this->wpdb->insert($this->tb_cmt_users, );
 
 		$execute = $this->wpdb->query( $query );
 
