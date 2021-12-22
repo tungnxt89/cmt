@@ -39,7 +39,6 @@ class CMT_DB {
 	 *
 	 * @return bool|int
 	 * @throws Exception
-	 * Xã Ea Riêng, Huyện M'Drắk, Tỉnh Đắk Lắk
 	 */
 	public function create_tb_users() {
 		$execute = $this->wpdb->query(
@@ -53,12 +52,12 @@ class CMT_DB {
 				noi_tra varchar(255) NOT NULL,
 				lay_ho varchar(255) NOT NULL,
 				ma_to_khai varchar(255) NOT NULL,
-				name varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+				name varchar(255) NOT NULL,
 				so_cccd varchar(255) default 0,
 				birthday varchar(255) NOT NULL,
 				sex varchar(5) NOT NULL,
-				address varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-				address_full varchar(255) NOT NULL CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+				address varchar(255) NOT NULL,
+				address_full varchar(255) NOT NULL,
 				returnx int(1) default 0,
 				note text,
 				PRIMARY KEY (id),
@@ -70,7 +69,7 @@ class CMT_DB {
 				KEY bithday (birthday),
 				KEY sex (sex),
 				KEY address (address)
-			)
+			) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci
 			"
 		);
 
@@ -82,6 +81,7 @@ class CMT_DB {
 	 *
 	 * @return bool|int
 	 * @throws Exception
+	 * Huyện M'Drắk, Tỉnh Đắk Lắk
 	 */
 	public function insert_data_users( array $data, array $data_ma_to_khai_insert ) {
 		$query = "
@@ -101,13 +101,14 @@ class CMT_DB {
 			$row  = ' (';
 			$row .= "'{$data_row['ma_dsdn']}',";
 			$row .= "'{$data_row['ngay_khai']}',";
-			$row .= "'{$data_row['noi_tra']}',";
-			$row .= "'{$data_row['lay_ho']}',";
+			$row .= $this->wpdb->prepare( '%s,', $data_row['noi_tra'] );
+			$row .= $this->wpdb->prepare( '%s,', $data_row['lay_ho'] );
 			$row .= "'{$data_row['ma_to_khai']}',";
 			$row .= $this->wpdb->prepare( '%s,', $data_row['name'] );
 			$row .= "'{$data_row['so_cccd']}',";
 			$row .= "'{$data_row['birthday']}',";
 			$row .= "'{$data_row['sex']}',";
+			//$row .= "'" . str_replace( "'", "\'", $data_row['address'] ) . "'";
 			$row .= $this->wpdb->prepare( '%s', $data_row['address'] );
 			$row .= ')';
 
@@ -120,8 +121,6 @@ class CMT_DB {
 
 		$data_row_str = implode( ',', $data_row_arr );
 		$query       .= $data_row_str;
-
-		$this->wpdb->insert($this->tb_cmt_users, );
 
 		$execute = $this->wpdb->query( $query );
 
