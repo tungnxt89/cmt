@@ -88,14 +88,14 @@
 
         // Read file ds-noi-tra
         const urlFileDsNoiTra = $('input[name=file_ds_noi_tra]').val();
-        console.log(urlFileDsNoiTra);
+        //console.log(urlFileDsNoiTra);
         config.typeFile = 'ds_noi_tra';
         config.download = true;
         Papa.parse(urlFileDsNoiTra, config);
 
         // Read file ds-lay-ho
         const urlFileDsLayHo = $('input[name=file_ds_lay_ho]').val();
-        console.log(urlFileDsLayHo);
+        //console.log(urlFileDsLayHo);
         config.typeFile = 'ds_lay_ho';
         config.download = true;
         Papa.parse(urlFileDsLayHo, config);
@@ -160,7 +160,7 @@
 
             datas = datas.concat(data_file_right);
 
-            console.log(datas);
+            //console.log(datas);
 
             total_files_read_done++;
 
