@@ -103,11 +103,11 @@ class CMT_DB {
 			$row .= "'{$data_row['noi_tra']}',";
 			$row .= "'{$data_row['lay_ho']}',";
 			$row .= "'{$data_row['ma_to_khai']}',";
-			$row .= "'{$data_row['name']}',";
+			$row .= $this->wpdb->prepare( '%s,', $data_row['name'] );
 			$row .= "'{$data_row['so_cccd']}',";
 			$row .= "'{$data_row['birthday']}',";
 			$row .= "'{$data_row['sex']}',";
-			$row .= "'{$data_row['address']}'";
+			$row .= $this->wpdb->prepare( '%s', $data_row['address'] );
 			$row .= ')';
 
 			$data_row_arr[] = $row;
@@ -195,10 +195,10 @@ class CMT_DB {
 	public function get_users( Filter_User $filter ) {
 		$offset = $this->limit * ( $filter->page - 1 );
 
-		$fields_arr = get_object_vars($filter);
-		unset($fields_arr['page']);
-		$fields_arr = array_keys($fields_arr);
-		$select_fields = implode(',', $fields_arr);
+		$fields_arr = get_object_vars( $filter );
+		unset( $fields_arr['page'] );
+		$fields_arr    = array_keys( $fields_arr );
+		$select_fields = implode( ',', $fields_arr );
 
 		$WHERE = ' WHERE 1=1 ';
 
@@ -308,7 +308,7 @@ class CMT_DB {
 			trim( $filter_user->address )
 		);
 
-		error_log("SQL:" . $query);
+		error_log( 'SQL:' . $query );
 
 		$result = $this->wpdb->query( $query );
 
