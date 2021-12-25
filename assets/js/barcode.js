@@ -1,13 +1,13 @@
 ( function( $ ) {
 	$( function() {
 		let total_data_insert = 0;
-		const total_data_per_insert = 5;
+		const total_data_per_insert = 2;
 		let total_pages = 0;
-		const page = 1;
-		const data_barcode = [];
+		let page = 1;
+		let data_barcode = [];
 
 		const config = {
-			delimiter: ';', // auto-detect
+			delimiter: ',', // auto-detect
 			newline: '', // auto-detect
 			quoteChar: '"',
 			escapeChar: '"',
@@ -54,8 +54,10 @@
 			$.each( data_file, function( i ) {
 				const row = data_file[ i ][ 0 ];
 
+				//console.log(row);
+
 				const row_arr = row.split( '|' );
-				let stt = i + 1;
+				let stt = i;
 				const info = {};
 				info.stt = stt;
 				info.cccd = row_arr[ 0 ];
@@ -67,6 +69,10 @@
 
 				data_barcode.push( info );
 			} );
+
+			const data_barcode_length = data_barcode.length;
+
+			data_barcode = data_barcode.splice(5, data_barcode_length);
 
 			total_data_insert = data_barcode.length;
 			total_pages = total_data_insert / total_data_per_insert;
@@ -113,6 +119,8 @@
 						const from = ( params.page - 1 ) * total_data_per_insert;
 						const to = from + total_data_per_insert;
 
+						console.log(from, to);
+
 						if ( params.data_send !== undefined ) {
 							params.data = data_barcode.slice( from, to );
 						}
@@ -120,7 +128,9 @@
 						//const progressPercent = (params.page/total_pages * 100).toFixed(2);
 						//elInfoProgress.text(progressPercent + '%');
 
-						handleAjax( url, params );
+						setTimeout(function(){
+							handleAjax( url, params );
+						});
 					} else {
 						//elInfoProgress.text('Hoàn thành');
 						//alert('Tien trinh da hoan thanh');

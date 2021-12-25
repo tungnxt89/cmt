@@ -299,7 +299,7 @@ class CMT_DB {
 				AND box_id = 0
 				AND sex = %s
 				AND birthday = %s
-				AND address_full = %s
+				AND address = %s
 			",
 			$data_update['cccd'],
 			$data_update['box_id'],
@@ -310,7 +310,7 @@ class CMT_DB {
 			trim( $filter_user->address )
 		);
 
-		error_log( 'SQL:' . $query );
+		//error_log( 'SQL:' . $query );
 
 		$result = $this->wpdb->query( $query );
 

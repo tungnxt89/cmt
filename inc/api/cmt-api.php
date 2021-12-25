@@ -195,9 +195,9 @@ class CMT_API {
 				$index_ward        = $count_address_arr - 3;
 
 				$address_search = '';
-				for ( $i = 0; $i < $index_ward; $i++ ) {
+				/*for ( $i = 0; $i < $index_ward; $i++ ) {
 					$address_search .= $address_arr[ $i ] . ', ';
-				}
+				}*/
 
 				$address_search .= 'Phường' . $address_arr[ $index_ward ] . ', ';
 				$address_search .= 'Quận' . $address_arr[ $index_district ] . ', ';

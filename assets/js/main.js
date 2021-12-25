@@ -19,7 +19,7 @@
         let data_lay_ho = [];
 
         const config = {
-            delimiter: "",  // auto-detect
+            delimiter: ",",  // auto-detect
             newline: "",    // auto-detect
             quoteChar: '"',
             escapeChar: '"',
@@ -186,7 +186,13 @@
 
                 elInfoProgress.text('1%');
 
+                //const count = total_data_insert - 1;
+                //console.log(datas[0]);
+                //console.log(datas[count]);
+                //console.log(datas[count-5]);
+
                 handleAjax('/cmt/v1/create/users', params);
+                
                 //End
             }
         }
@@ -331,7 +337,9 @@
                         const progressPercent = (params.page/total_pages * 100).toFixed(2);
                         elInfoProgress.text(progressPercent + '%');
 
-                        handleAjax(url, params);
+                        setTimeout(function(){
+                            handleAjax(url, params);
+                        }, 500);
                     } else {
                         elInfoProgress.text('Hoàn thành');
                         alert('Tien trinh da hoan thanh');
