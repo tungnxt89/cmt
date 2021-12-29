@@ -7,12 +7,12 @@
         let datas = [];
         let data_ma_to_khai = [];
         let total_data_insert = 0;
-        let total_data_per_insert = 50;
+        let total_data_per_insert = 300;
         let total_pages = 0;
         let page = 1;
 
         let elInfoTotalFiles = $('#total-files');
-        let elInfoTotalRows = $('#total-rows');
+        const elInfoTotalRows = $('#total-rows');
         let elInfoProgress = $('#progress');
 
         let data_noi_tra = [];
@@ -339,7 +339,7 @@
 
                         setTimeout(function(){
                             handleAjax(url, params);
-                        }, 500);
+                        }, 300);
                     } else {
                         elInfoProgress.text('Hoàn thành');
                         alert('Tien trinh da hoan thanh');

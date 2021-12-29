@@ -297,6 +297,7 @@ class CMT_DB {
 				stt_barcode = %d
 				WHERE name = %s
 				AND box_id = 0
+				AND so_cccd = ''
 				AND sex = %s
 				AND birthday = %s
 				AND address = %s

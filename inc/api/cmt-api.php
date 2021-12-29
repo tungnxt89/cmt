@@ -212,7 +212,9 @@ class CMT_API {
 
 				$result = $cmt_db->check_update_cccd( $filter, $data );
 				if ( ! is_bool( $result ) && $result ) {
-
+					$res->data->box_id = $data['box_id'];
+				} else {
+					$res->message = 'Barcode đã được cập nhật';
 				}
 			}
 

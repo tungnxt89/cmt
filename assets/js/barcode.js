@@ -1,10 +1,12 @@
 ( function( $ ) {
 	$( function() {
 		let total_data_insert = 0;
-		const total_data_per_insert = 2;
+		const total_data_per_insert = 5;
 		let total_pages = 0;
 		let page = 1;
 		let data_barcode = [];
+
+		const elInfoTotalRows = $('#total-rows');
 
 		const config = {
 			delimiter: ',', // auto-detect
@@ -72,11 +74,11 @@
 
 			const data_barcode_length = data_barcode.length;
 
-			data_barcode = data_barcode.splice(5, data_barcode_length);
+			data_barcode = data_barcode.splice( 1, data_barcode_length );
 
 			total_data_insert = data_barcode.length;
 			total_pages = total_data_insert / total_data_per_insert;
-			//elInfoTotalRows.text(total_data_insert);
+			elInfoTotalRows.text(total_data_insert);
 
 			if ( total_data_insert % total_data_per_insert !== 0 ) {
 				total_pages = Math.floor( total_data_insert / total_data_per_insert ) + 1;
@@ -96,7 +98,7 @@
 				box_id,
 			};
 
-			console.log( params );
+			//console.log( params );
 
 			//elInfoProgress.text('1%');
 
@@ -112,16 +114,14 @@
 			} ).then( ( res ) => {
 				const { status, message, data } = res;
 				if ( status === 'success' ) {
-					//console.log(data.page, total_pages);
+					console.log(data.page, total_pages);
 
 					if ( data.page <= total_pages ) {
 						params.page = data.page;
 						const from = ( params.page - 1 ) * total_data_per_insert;
 						const to = from + total_data_per_insert;
 
-						console.log(from, to);
-
-						if ( params.data_send !== undefined ) {
+						if ( params.data !== undefined ) {
 							params.data = data_barcode.slice( from, to );
 						}
 
@@ -132,9 +132,14 @@
 							handleAjax( url, params );
 						});
 					} else {
-						//elInfoProgress.text('Hoàn thành');
-						//alert('Tien trinh da hoan thanh');
-						//window.location.reload()
+						let ms_alert = '';
+						if(undefined !== data.box_id) {
+							ms_alert = 'Tien trinh da hoan thanh. Box id = ' + data.box_id;
+						} else {
+							ms_alert = message;
+						}
+						alert( ms_alert );
+						window.location.reload();
 					}
 				}
 			} ).catch( ( err ) => {
