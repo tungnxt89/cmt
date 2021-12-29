@@ -7,7 +7,7 @@
         let datas = [];
         let data_ma_to_khai = [];
         let total_data_insert = 0;
-        let total_data_per_insert = 300;
+        let total_data_per_insert = 1000;
         let total_pages = 0;
         let page = 1;
 
