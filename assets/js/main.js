@@ -352,59 +352,5 @@
 
             });
         };
-
-        // Events
-        $(document).on('keyup', '#current-page-selector', function(e){
-            const self = $(this);
-
-            if(e.keyCode == 13){
-                const params = {
-                    page: self.val()
-                };
-                get_users(params);
-            }
-        });
-
-        $(document).on('click', '.next-page', function(e) {
-            const total_pages = parseInt($('.total-pages').text());
-            const pageCurrent = parseInt($('#current-page-selector').val());
-
-
-            if(pageCurrent < total_pages) {
-                const pageNext = pageCurrent + 1;
-
-                const params = {
-                    page: pageNext
-                };
-                get_users(params);
-            }
-        });
-
-        $(document).on('click', '.prev-page', function(e) {
-            const pageCurrent = parseInt($('#current-page-selector').val());
-
-
-            if(pageCurrent > 1) {
-                const pagePrev = pageCurrent - 1;
-
-                const params = {
-                    page: pagePrev
-                };
-                get_users(params);
-            }
-        });
-
-        $(document).on('click', '.first-page', function(e) {
-            const params = {
-                page: 1
-            };
-            get_users(params);
-        });
-
-        // Call first
-        const params = {
-            page: 1
-        };
-        get_users(params);
     });
 }(jQuery));

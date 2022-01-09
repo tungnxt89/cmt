@@ -84,9 +84,9 @@ class CMT {
 		wp_enqueue_script( 'barcode' );
 
 		wp_register_script( 'search', self::$URL_PLUGIN . 'assets/js/search.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
-		wp_enqueue_script( 'search' );
+		//wp_enqueue_script( 'search' );
 
-		wp_register_script( 'main', self::$URL_PLUGIN . 'assets/js/main.js', [ 'jquery', 'wp-api-fetch' ], uniqid() );
+		wp_register_script( 'main', self::$URL_PLUGIN . 'assets/js/main.js', [ 'search', 'jquery', 'wp-api-fetch' ], uniqid() );
 		wp_enqueue_script( 'main' );
 	}
 

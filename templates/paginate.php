@@ -17,7 +17,7 @@
 		<span class="screen-reader-text">Current Page</span>
 		<span id="table-paging" class="paging-input">
 			<span class="tablenav-paging-text">
-				<input class="current-page" id="current-page-selector" type="text" name="paged" 
+				<input class="field-search" id="current-page-selector" type="text" name="page" 
 			value="<?php echo $page_current ?>" size="1" aria-describedby="table-paging"> of 
 			<span class="total-pages"><?php echo $total_pages ?></span>
 			</span>
